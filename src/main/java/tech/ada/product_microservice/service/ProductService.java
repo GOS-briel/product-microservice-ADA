@@ -1,12 +1,13 @@
 package tech.ada.product_microservice.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import tech.ada.product_microservice.model.Product;
-import tech.ada.product_microservice.repository.ProductRepository;
-
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import tech.ada.product_microservice.model.Product;
+import tech.ada.product_microservice.repository.ProductRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +38,31 @@ public class ProductService {
         productBySku.setPrice(product.getPrice());
         this.allProducts().set(indexProduct, productBySku);
         return productBySku;
+    }
+
+    public Product updateProduct(Long sku, Product product) {
+        Product productBySku = this.getProductBySku(sku);
+        if (productBySku == null) {
+            throw new RuntimeException("Produto nao encontrado com SKU: " + sku);
+        }
+
+        int indexProduct = this.allProducts().indexOf(productBySku);
+
+
+        productBySku.setSku(sku); 
+        productBySku.setDescription(product.getDescription());
+        productBySku.setPrice(product.getPrice());
+
+        this.allProducts().set(indexProduct, productBySku);
+        return productBySku;
+    }
+
+    public void deleteProduct(Long sku) {
+        Product productBySku = this.getProductBySku(sku);
+        if (productBySku == null) {
+            throw new RuntimeException("Produto nao encontrado com SKU: " + sku);
+        }
+
+        this.allProducts().remove(productBySku);
     }
 }
