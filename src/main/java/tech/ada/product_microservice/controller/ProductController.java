@@ -1,10 +1,10 @@
 package tech.ada.product_microservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.ada.product_microservice.model.Product;
 import tech.ada.product_microservice.service.ProductService;
 
@@ -21,5 +21,28 @@ public class ProductController {
     public ResponseEntity<List<Product>> allProducts() {
         return ResponseEntity.ok(this.productService.allProducts());
     }
+
+    //GET BY ID
+    @GetMapping("/{sku}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long sku) {
+        return ResponseEntity.ok(this.productService.getProductBySku(sku));
+    }
+
+    //POST - CREATE
+    @PostMapping
+    public ResponseEntity<Product> create(@RequestBody Product product) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.productService.create(product));
+    }
+
+    //PUT - UPDATE ALL
+
+    //PATCH - PARTIAL UPDATE
+    @PatchMapping("/{sku}")
+    public ResponseEntity<Product> partialUpdate(@PathVariable Long sku,
+                                                 @RequestBody Product product) {
+        return ResponseEntity.ok(this.productService.partialUpdate(sku, product));
+    }
+
+    //DELETE - REMOVE
 
 }
