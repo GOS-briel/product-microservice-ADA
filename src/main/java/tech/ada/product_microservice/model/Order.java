@@ -6,29 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_products")
+@Table(name = "tb_orders")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private Long sku;
-
-    @Column(length = 100)
-    private String description;
-
-    @Column(precision = 16, scale = 2)
-    private BigDecimal price;
+    @ManyToMany
+    private List<Product> products;
 
 
 }
