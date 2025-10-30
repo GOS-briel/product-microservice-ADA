@@ -20,8 +20,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    private List<Product> products;
+/*    @ManyToMany
+    private List<Product> products;*/
 
 
 }

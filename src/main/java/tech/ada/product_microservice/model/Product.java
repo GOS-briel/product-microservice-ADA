@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.awt.print.Book;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,13 +16,24 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQueries({
+        @NamedQuery(
+                name = "Product.searchByDescription",
+                query = "SELECT p FROM Product p WHERE p.description LIKE :description"
+        )
+})
+@NamedNativeQuery(
+        name = "Product.searchBySku",
+        query = "SELECT * FROM TB_PRODUCTS p WHERE p.sku = :sku",
+        resultClass = Product.class
+)
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long sku;
 
     @Column(length = 100)

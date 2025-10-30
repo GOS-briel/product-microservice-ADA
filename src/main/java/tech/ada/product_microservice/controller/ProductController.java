@@ -1,6 +1,8 @@
 package tech.ada.product_microservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +23,21 @@ public class ProductController {
         return ResponseEntity.ok(this.productService.allProducts());
     }
 
+    @GetMapping("/paging")
+    public ResponseEntity<Page<Product>> allProducts(Pageable pageable) {
+        return ResponseEntity.ok(this.productService.allProducts(pageable));
+    }
+
     //GET BY ID
     @GetMapping("/{sku}")
     public ResponseEntity<Product> getProduct(@PathVariable Long sku) {
-        return ResponseEntity.ok(this.productService.getProductBySku(sku));
+        //return ResponseEntity.ok(this.productService.getProductBySku(sku));
+        return ResponseEntity.ok(this.productService.searchBySku(sku));
+    }
+
+    @GetMapping("/search-by-description")
+    public ResponseEntity<List<Product>> getProduct(@RequestParam("description") String description) {
+        return ResponseEntity.ok(this.productService.searchByDescription(description));
     }
 
     //POST - CREATE
